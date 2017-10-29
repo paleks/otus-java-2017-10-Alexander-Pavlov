@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Premain-Class: ru.otus.measuringstand.agent.MeasureAgent
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
+Can-Set-Native-Method-Prefix: true
+Main-Class: ru.otus.measuringstand.main.MeasuringStand
+

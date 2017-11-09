@@ -14,7 +14,7 @@ import org.openjdk.jol.info.*;
 public class MeasuringStand {
 
     private LinkedList<Object> stack = new LinkedList<Object>();
-    private List<Object> visited = new ArrayList<Object>();
+    private Set<Object> visited = new HashSet<>();
 
     public static void main(String[] args) {
         MeasuringStand stand = new MeasuringStand();

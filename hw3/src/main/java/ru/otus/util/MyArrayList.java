@@ -44,18 +44,8 @@ public class MyArrayList<T> implements List<T>{
      *                              (<a href="Collection.html#optional-restrictions">optional</a>)
      */
     public boolean contains(final Object o) {
-        if (o == null) {
-            for (int i = 0; i < this.size; i++) {
-                if (this.elements[i] == null) {
-                    return true;
-                }
-            }
-        } else {
-            for (int i = 0; i < this.size; i++) {
-                if (o.equals(this.elements[i])) {
-                    return true;
-                }
-            }
+        if (this.indexOf(o) != -1) {
+            return true;
         }
         return false;
     }
@@ -605,7 +595,7 @@ public class MyArrayList<T> implements List<T>{
          */
         @Override
         public void remove() {
-
+            throw new UnsupportedOperationException();
         }
 
         /**
@@ -625,7 +615,7 @@ public class MyArrayList<T> implements List<T>{
          */
         @Override
         public void forEachRemaining(Consumer<? super T> action) {
-
+            throw new UnsupportedOperationException();
         }
     }
 
@@ -742,7 +732,7 @@ public class MyArrayList<T> implements List<T>{
          */
         @Override
         public void remove() {
-
+            throw new UnsupportedOperationException();
         }
 
         /**
@@ -792,7 +782,7 @@ public class MyArrayList<T> implements List<T>{
          */
         @Override
         public void add(T t) {
-
+            throw new UnsupportedOperationException();
         }
     }
 }

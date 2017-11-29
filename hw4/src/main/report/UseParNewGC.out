@@ -1,0 +1,69 @@
+Java HotSpot(TM) 64-Bit Server VM
+[-Xms64m, -Xmx64m, -XX:+UseParNewGC, -XX:MaxMetaspaceSize=64m, -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2017.2.5\lib\idea_rt.jar=50389:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2017.2.5\bin, -Dfile.encoding=UTF-8]
+
+ ------------------------------ 1 min is started ------------------------------
+
+Young Gen GC: - 1 ParNew (from Allocation Failure) 18 milliseconds; start-end times 31130-31148
+GCStatistics{youngGCQuantity=1, oldGCQuantity=0, totalYoungGCDuration=18, totalOldGCDuration=0}
+
+ ------------------------------ 2 min is started ------------------------------
+
+Young Gen GC: - 2 ParNew (from Allocation Failure) 29 milliseconds; start-end times 69169-69198
+
+Young Gen GC: - 3 ParNew (from Allocation Failure) 29 milliseconds; start-end times 107218-107247
+GCStatistics{youngGCQuantity=2, oldGCQuantity=0, totalYoungGCDuration=58, totalOldGCDuration=0}
+
+ ------------------------------ 3 min is started ------------------------------
+
+Young Gen GC: - 4 ParNew (from Allocation Failure) 33 milliseconds; start-end times 143266-143299
+
+Young Gen GC: - 5 ParNew (from Allocation Failure) 0 milliseconds; start-end times 172317-172317
+
+Old Gen GC: - 1 MarkSweepCompact (from Allocation Failure) 83 milliseconds; start-end times 172317-172400
+GCStatistics{youngGCQuantity=2, oldGCQuantity=1, totalYoungGCDuration=33, totalOldGCDuration=83}
+
+ ------------------------------ 4 min is started ------------------------------
+
+Young Gen GC: - 6 ParNew (from Allocation Failure) 0 milliseconds; start-end times 220424-220424
+
+Old Gen GC: - 2 MarkSweepCompact (from Allocation Failure) 94 milliseconds; start-end times 220424-220518
+GCStatistics{youngGCQuantity=1, oldGCQuantity=1, totalYoungGCDuration=0, totalOldGCDuration=94}
+
+ ------------------------------ 5 min is started ------------------------------
+
+Old Gen GC: - 3 MarkSweepCompact (from Allocation Failure) 88 milliseconds; start-end times 242526-242614
+
+Old Gen GC: - 4 MarkSweepCompact (from Allocation Failure) 104 milliseconds; start-end times 242614-242718
+
+Old Gen GC: - 5 MarkSweepCompact (from Allocation Failure) 98 milliseconds; start-end times 249738-249836
+
+Old Gen GC: - 6 MarkSweepCompact (from Allocation Failure) 102 milliseconds; start-end times 272868-272970
+
+Old Gen GC: - 7 MarkSweepCompact (from Allocation Failure) 92 milliseconds; start-end times 283989-284081
+
+Old Gen GC: - 8 MarkSweepCompact (from Allocation Failure) 110 milliseconds; start-end times 290094-290204
+
+Old Gen GC: - 9 MarkSweepCompact (from Allocation Failure) 97 milliseconds; start-end times 293216-293313
+
+Old Gen GC: - 10 MarkSweepCompact (from Allocation Failure) 99 milliseconds; start-end times 295316-295415
+
+Old Gen GC: - 11 MarkSweepCompact (from Allocation Failure) 105 milliseconds; start-end times 296417-296522
+
+Old Gen GC: - 12 MarkSweepCompact (from Allocation Failure) 94 milliseconds; start-end times 296524-296618
+
+Old Gen GC: - 13 MarkSweepCompact (from Allocation Failure) 105 milliseconds; start-end times 296621-296726
+
+Old Gen GC: - 14 MarkSweepCompact (from Allocation Failure) 99 milliseconds; start-end times 296727-296826
+
+Old Gen GC: - 15 MarkSweepCompact (from Allocation Failure) 99 milliseconds; start-end times 296826-296925
+
+Old Gen GC: - 16 MarkSweepCompact (from Allocation Failure) 104 milliseconds; start-end times 296926-297030
+
+Old Gen GC: - 18 MarkSweepCompact (from Allocation Failure) 94 milliseconds; start-end times 298022-298116
+Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+
+Old Gen GC: - 19 MarkSweepCompact (from Allocation Failure) 102 milliseconds; start-end times 298116-298218
+	at ru.otus.hw4.Main.main(Main.java:26)
+
+Old Gen GC: - 20 MarkSweepCompact (from Allocation Failure) 96 milliseconds; start-end times 298219-298315
+Java HotSpot(TM) 64-Bit Server VM warning: Using the ParNew young collector with the Serial old collector is deprecated and will likely be removed in a future release

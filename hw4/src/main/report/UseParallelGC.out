@@ -1,0 +1,42 @@
+Java HotSpot(TM) 64-Bit Server VM
+[-Xms64m, -Xmx64m, -XX:+UseParallelGC, -XX:MaxMetaspaceSize=64m, -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2017.2.5\lib\idea_rt.jar=50318:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2017.2.5\bin, -Dfile.encoding=UTF-8]
+
+ ------------------------------ 1 min is started ------------------------------
+
+Young Gen GC: - 1 PS Scavenge (from Allocation Failure) 9 milliseconds; start-end times 31196-31205
+GCStatistics{youngGCQuantity=1, oldGCQuantity=0, totalYoungGCDuration=9, totalOldGCDuration=0}
+
+ ------------------------------ 2 min is started ------------------------------
+
+Young Gen GC: - 2 PS Scavenge (from Allocation Failure) 17 milliseconds; start-end times 66226-66243
+
+Young Gen GC: - 3 PS Scavenge (from Allocation Failure) 14 milliseconds; start-end times 103262-103276
+GCStatistics{youngGCQuantity=2, oldGCQuantity=0, totalYoungGCDuration=31, totalOldGCDuration=0}
+
+ ------------------------------ 3 min is started ------------------------------
+
+Young Gen GC: - 4 PS Scavenge (from Allocation Failure) 21 milliseconds; start-end times 136293-136314
+
+Young Gen GC: - 5 PS Scavenge (from Allocation Failure) 21 milliseconds; start-end times 162330-162351
+
+Old Gen GC: - 1 PS MarkSweep (from Ergonomics) 306 milliseconds; start-end times 162351-162657
+GCStatistics{youngGCQuantity=2, oldGCQuantity=1, totalYoungGCDuration=42, totalOldGCDuration=306}
+
+ ------------------------------ 4 min is started ------------------------------
+
+Old Gen GC: - 2 PS MarkSweep (from Ergonomics) 457 milliseconds; start-end times 207677-208134
+GCStatistics{youngGCQuantity=0, oldGCQuantity=1, totalYoungGCDuration=0, totalOldGCDuration=457}
+
+ ------------------------------ 5 min is started ------------------------------
+
+Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+Old Gen GC: - 3 PS MarkSweep (from Ergonomics) 318 milliseconds; start-end times 243152-243470
+	at java.util.Arrays.copyOf(Arrays.java:3210)
+
+	at java.util.Arrays.copyOf(Arrays.java:3181)
+Old Gen GC: - 4 PS MarkSweep (from Allocation Failure) 253 milliseconds; start-end times 243470-243723
+	at java.util.ArrayList.grow(ArrayList.java:261)
+	at java.util.ArrayList.ensureExplicitCapacity(ArrayList.java:235)
+	at java.util.ArrayList.ensureCapacityInternal(ArrayList.java:227)
+	at java.util.ArrayList.add(ArrayList.java:458)
+	at ru.otus.hw4.Main.main(Main.java:26)

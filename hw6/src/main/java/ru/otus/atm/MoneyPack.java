@@ -17,7 +17,7 @@ public class MoneyPack {
     public int getAmount() {
         int amount = 0;
         for (NotePack notePack : moneyPack) {
-            amount += (notePack.getQuantity() * notePack.getNominal().getNominalVal());
+            amount += notePack.getAmount();
         }
         return amount;
     }

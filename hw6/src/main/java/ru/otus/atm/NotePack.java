@@ -18,6 +18,10 @@ public class NotePack {
         return quantity;
     }
 
+    public int getAmount() {
+        return this.getQuantity() * this.getNominal().getNominalVal();
+    }
+
     @Override
     public String toString() {
         return "NotePack{" +

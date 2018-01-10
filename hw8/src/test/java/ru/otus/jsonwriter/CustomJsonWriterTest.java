@@ -27,23 +27,15 @@ public class CustomJsonWriterTest {
     }
 
     @Test
-    public void testChar() {
-        simpleTest('c', 'c');
-    }
-
-    @Test
-    public void testBoolean() {
-        simpleTest(true, true);
-    }
-
-    @Test
     public void testNumber() {
         simpleTest(100, 100);
     }
 
     @Test
-    public void testNumberArray() {
-        String jsonString = CustomJsonWriter.write(new Integer[]{1,2,3});
+    public void testNumberArray() throws IllegalAccessException {
+        System.out.println(new Integer[]{1,2,3});
+
+        String jsonString = MyJsonWriter.write(new Integer[]{1,2,3});
         System.out.println(jsonString);
         String gsonString = new Gson().toJson(new Integer[]{1,2,3});
         System.out.println(gsonString);
@@ -53,8 +45,8 @@ public class CustomJsonWriterTest {
     }
 
     @Test
-    public void testMultiDimNumberArray() {
-        String jsonString = CustomJsonWriter.write(new Integer[][]{{1,2,3}, {4,5,6}});
+    public void testMultiDimNumberArray() throws IllegalAccessException {
+        String jsonString = MyJsonWriter.write(new Integer[][]{{1,2,3}, {4,5,6}});
         System.out.println(jsonString);
         String gsonString = new Gson().toJson(new Integer[][]{{1,2,3}, {4,5,6}});
         System.out.println(gsonString);
@@ -64,13 +56,13 @@ public class CustomJsonWriterTest {
     }
 
     @Test
-    public void testCollection() {
+    public void testCollection() throws IllegalAccessException {
         List<String> list = new ArrayList<>();
         list.add("A");
         list.add("B");
         list.add("C");
 
-        String jsonString = CustomJsonWriter.write(list);
+        String jsonString = MyJsonWriter.write(list);
         System.out.println(jsonString);
         String gsonString = new Gson().toJson(list);
         System.out.println(gsonString);
@@ -85,7 +77,7 @@ public class CustomJsonWriterTest {
         Person personOrig = createTestPersonInstance();
         System.out.println("======>>>>> ORIGINAL PERSON...");
         System.out.println(personOrig);
-        String jsonString = CustomJsonWriter.write(personOrig);
+        String jsonString = MyJsonWriter.write(personOrig);
         System.out.println("======>>>>> JSON ORIGINAL PERSON...");
         System.out.println(jsonString);
         System.out.println(new Gson().toJson(personOrig).toString());
@@ -99,12 +91,12 @@ public class CustomJsonWriterTest {
     }
 
     @Test
-    public void testComplexArray() {
+    public void testComplexArray() throws IllegalAccessException {
         Person[] arr = new Person[2];
         arr[0] = createTestPersonInstance();
         arr[1] = createTestPersonInstance();
 
-        String jsonString = CustomJsonWriter.write(arr);
+        String jsonString = MyJsonWriter.write(arr);
         System.out.println("======>>>>> JSON ORIGINAL PERSONS ARRAY...");
         System.out.println(jsonString);
 
@@ -114,7 +106,7 @@ public class CustomJsonWriterTest {
     }
 
     @Test
-    public void testComplexList() {
+    public void testComplexList() throws IllegalAccessException {
         List<Person> list = new ArrayList();
         Person person1 = createTestPersonInstance();
         person1.setFirstName("Alice");
@@ -125,7 +117,7 @@ public class CustomJsonWriterTest {
         list.add(person1);
         list.add(person2);
 
-        String jsonString = CustomJsonWriter.write(list);
+        String jsonString = MyJsonWriter.write(list);
         System.out.println("======>>>>> JSON ORIGINAL PERSONS LIST...");
         System.out.println(jsonString);
         System.out.println(new Gson().toJson(list).toString());
@@ -138,7 +130,7 @@ public class CustomJsonWriterTest {
     }
 
     @Test
-    public void testComplexSet() {
+    public void testComplexSet() throws IllegalAccessException {
         Set<Person> set = new HashSet();
         Person person1 = createTestPersonInstance();
         person1.setFirstName("Alice");
@@ -149,7 +141,7 @@ public class CustomJsonWriterTest {
         set.add(person1);
         set.add(person2);
 
-        String jsonString = CustomJsonWriter.write(set);
+        String jsonString = MyJsonWriter.write(set);
         System.out.println("======>>>>> JSON ORIGINAL PERSONS SET...");
         System.out.println(jsonString);
         System.out.println(new Gson().toJson(set).toString());
@@ -160,8 +152,8 @@ public class CustomJsonWriterTest {
     }
 
     @Test
-    public void testEmptyPerson() {
-        String jsonString = CustomJsonWriter.write(new Person());
+    public void testEmptyPerson() throws IllegalAccessException {
+        String jsonString = MyJsonWriter.write(new Person());
         System.out.println("======>>>>> JSON ORIGINAL PERSON...");
         System.out.println(jsonString);
         System.out.println(new Gson().toJson(new Person()).toString());
@@ -199,7 +191,12 @@ public class CustomJsonWriterTest {
     }
 
     private void simpleTest(Object toJson, Object toGson) {
-        String jsonString = CustomJsonWriter.write(toJson);
+        String jsonString = null;
+        try {
+            jsonString = MyJsonWriter.write(toJson);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
         System.out.println(jsonString);
         String gsonString = new Gson().toJson(toGson);
         System.out.println(gsonString);

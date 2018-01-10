@@ -1,5 +1,7 @@
 package ru.otus.jsonwriter.ru.otus.jsonwriter.data;
 
+import java.util.Arrays;
+
 public class Address {
     private String country;
     private String city;

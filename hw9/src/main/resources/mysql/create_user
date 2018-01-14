@@ -1,0 +1,2 @@
+CREATE USER 'otus'@'localhost' IDENTIFIED BY 'otus';
+GRANT ALL PRIVILEGES ON * . * TO 'otus'@'localhost';

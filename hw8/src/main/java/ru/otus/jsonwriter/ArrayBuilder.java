@@ -17,16 +17,14 @@ public class ArrayBuilder implements GenericBuilder {
             Object object = iter.next();
 
             if (Utils.isString(object) || Utils.isNumber(object)) {
+                sb.append("\"" + object + "\"");
                 if (iter.hasNext()) {
-                    sb.append("\"" + object + "\",");
-                } else {
-                    sb.append("\"" + object + "\"");
+                    sb.append(",");
                 }
             } else if (Utils.isGenericBuilder(object)) {
+                sb.append(((GenericBuilder) object).build());
                 if (iter.hasNext()) {
-                    sb.append(((GenericBuilder) object).build() + ",");
-                } else {
-                    sb.append(((GenericBuilder) object).build());
+                    sb.append(",");
                 }
             }
         }

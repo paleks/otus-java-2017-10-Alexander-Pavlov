@@ -21,16 +21,14 @@ public class ObjectBuilder implements GenericBuilder {
             Object val = entry.getValue();
 
             if (Utils.isString(val) || Utils.isNumber(val)) {
+                sb.append("\"" + key).append("\":").append("\"" + val).append("\"");
                 if (iter.hasNext()) {
-                    sb.append("\"" + key).append("\":").append("\"" + val).append("\",");
-                } else {
-                    sb.append("\"" + key).append("\":").append("\"" + val).append("\"");
+                    sb.append(",");
                 }
             } else if (Utils.isGenericBuilder(val)) {
+                sb.append("\"" + key).append("\":").append(((GenericBuilder) val).build());
                 if (iter.hasNext()) {
-                    sb.append("\"" + key).append("\":").append(((GenericBuilder) val).build() + ",");
-                } else {
-                    sb.append("\"" + key).append("\":").append(((GenericBuilder) val).build());
+                    sb.append(",");
                 }
             }
         }

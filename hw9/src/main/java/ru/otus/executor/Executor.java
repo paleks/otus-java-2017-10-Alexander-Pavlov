@@ -8,6 +8,8 @@ import java.sql.Statement;
 public class Executor {
     private Connection connection;
 
+    private Executor() {}
+
     public Executor(Connection connection) {
         this.connection = connection;
     }
@@ -19,7 +21,9 @@ public class Executor {
             if (genKeys == null) {
                 throw new RuntimeException();
             }
-            return handler.handle(genKeys);
+            T result = handler.handle(genKeys);
+            stmt.close();
+            return result;
         }
     }
 
@@ -30,7 +34,9 @@ public class Executor {
             if (resultSet == null) {
                 throw new RuntimeException();
             }
-            return handler.handle(stmt.getResultSet());
+            T result = handler.handle(stmt.getResultSet());
+            stmt.close();
+            return result;
         }
     }
 }

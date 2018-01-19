@@ -30,6 +30,8 @@ public class ObjectBuilder implements GenericBuilder {
                 if (iter.hasNext()) {
                     sb.append(",");
                 }
+            } else {
+                throw new UnsupportedOperationException("At this moment type is not supported");
             }
         }
         return "{" + sb.toString() + "}";

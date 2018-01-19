@@ -1,9 +1,6 @@
 package ru.otus.executor;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class Executor {
     private Connection connection;
@@ -15,26 +12,16 @@ public class Executor {
     }
 
     public <T> T update(String query, Handler<T> handler) throws SQLException {
-        try (Statement stmt = connection.createStatement()) {
-            stmt.execute(query, Statement.RETURN_GENERATED_KEYS);
-            ResultSet genKeys = stmt.getGeneratedKeys();
-            if (genKeys == null) {
-                throw new RuntimeException();
-            }
-            T result = handler.handle(genKeys);
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            T result = handler.handle(stmt);
             stmt.close();
             return result;
         }
     }
 
     public <T> T execute(String query, Handler<T> handler) throws SQLException {
-        try (Statement stmt = connection.createStatement()) {
-            stmt.execute(query);
-            ResultSet resultSet = stmt.getResultSet();
-            if (resultSet == null) {
-                throw new RuntimeException();
-            }
-            T result = handler.handle(stmt.getResultSet());
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            T result = handler.handle(stmt);
             stmt.close();
             return result;
         }

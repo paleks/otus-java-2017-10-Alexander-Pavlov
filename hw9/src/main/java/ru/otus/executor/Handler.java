@@ -1,9 +1,10 @@
 package ru.otus.executor;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @FunctionalInterface
 public interface Handler<T> {
-    T handle(ResultSet resultSet) throws SQLException;
+    T handle(PreparedStatement statement) throws SQLException;
 }

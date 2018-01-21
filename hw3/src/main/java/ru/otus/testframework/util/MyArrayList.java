@@ -1,4 +1,4 @@
-package ru.otus.util;
+package ru.otus.testframework.util;
 
 import java.util.*;
 import java.util.function.Consumer;

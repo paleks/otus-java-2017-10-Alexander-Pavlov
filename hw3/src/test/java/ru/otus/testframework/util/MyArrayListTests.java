@@ -1,4 +1,4 @@
-package ru.otus.util;
+package ru.otus.testframework.util;
 
 import org.junit.Assert;
 import org.junit.Before;

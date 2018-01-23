@@ -1,0 +1,7 @@
+create table if not exists table_phone (
+id bigint(20) not null auto_increment,
+phone varchar(255),
+user_id bigint(20),
+primary key (id),
+foreign key (user_id)
+	references table_user(id));

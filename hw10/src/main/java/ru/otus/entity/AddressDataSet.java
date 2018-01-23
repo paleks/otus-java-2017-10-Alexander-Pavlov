@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "address")
+@Table(name = "table_address")
 public class AddressDataSet extends DataSet {
     @Column
     private String street;

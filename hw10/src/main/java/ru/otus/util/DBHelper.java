@@ -2,6 +2,7 @@ package ru.otus.util;
 
 import org.hibernate.cfg.Configuration;
 import ru.otus.entity.AddressDataSet;
+import ru.otus.entity.PhoneDataSet;
 import ru.otus.entity.UserDataSet;
 import ru.otus.executor.Executor;
 import ru.otus.service.DBService;
@@ -49,7 +50,7 @@ public class DBHelper {
         Configuration configuration = new Configuration();
 
         configuration.addAnnotatedClass(UserDataSet.class);
-        //configuration.addAnnotatedClass(PhoneDataSet.class);
+        configuration.addAnnotatedClass(PhoneDataSet.class);
         configuration.addAnnotatedClass(AddressDataSet.class);
 
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
@@ -58,7 +59,7 @@ public class DBHelper {
         configuration.setProperty("hibernate.connection.username", "otus");
         configuration.setProperty("hibernate.connection.password", "otus");
         configuration.setProperty("hibernate.show_sql", "true");
-        configuration.setProperty("hibernate.hbm2ddl.auto", "create");
+        configuration.setProperty("hibernate.hbm2ddl.auto", "update");
         configuration.setProperty("hibernate.connection.useSSL", "false");
         configuration.setProperty("hibernate.enable_lazy_load_no_trans", "true");
 

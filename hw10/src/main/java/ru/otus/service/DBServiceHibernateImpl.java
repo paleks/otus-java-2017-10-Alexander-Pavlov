@@ -33,7 +33,6 @@ public class DBServiceHibernateImpl implements DBService {
         try(Session session = sessionFactory.openSession()) {
             UserDataSetDAO userDataSetDAO = new UserDataSetDAO(session);
             return userDataSetDAO.save((UserDataSet) user);
-
         }
     }
 

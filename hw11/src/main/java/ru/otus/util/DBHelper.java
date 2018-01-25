@@ -1,5 +1,6 @@
 package ru.otus.util;
 
+import ru.otus.cache.CacheEngine;
 import ru.otus.executor.Executor;
 import ru.otus.service.DBService;
 import ru.otus.service.DBServiceImpl;
@@ -12,8 +13,8 @@ public class DBHelper {
     public static Connection getConnection() {
         String driver = "com.mysql.jdbc.Driver";
         String url = "jdbc:mysql://localhost:3306/otus_db?useSSL=false";
-        String login    = "ru/otus";
-        String password = "ru/otus";
+        String login    = "otus";
+        String password = "otus";
         try {
             Class.forName(driver);
             Connection connection = DriverManager.getConnection(url, login, password);
@@ -35,5 +36,9 @@ public class DBHelper {
 
     public static DBService getDBServiceInstance() {
         return new DBServiceImpl();
+    }
+
+    public static DBService getDBServiceInstance(CacheEngine cacheEngine) {
+        return new DBServiceImpl(cacheEngine);
     }
 }

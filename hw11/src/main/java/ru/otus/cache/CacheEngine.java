@@ -6,6 +6,8 @@ public interface CacheEngine<K, V> {
 
     CacheElement<K, V> get(K key);
 
+    boolean contains(K key);
+
     int getHitCount();
 
     int getMissCount();

@@ -59,7 +59,7 @@ public class DBHelper {
         configuration.setProperty("hibernate.connection.username", "otus");
         configuration.setProperty("hibernate.connection.password", "otus");
         configuration.setProperty("hibernate.show_sql", "true");
-        configuration.setProperty("hibernate.hbm2ddl.auto", "update");
+        //configuration.setProperty("hibernate.hbm2ddl.auto", "create");
         configuration.setProperty("hibernate.connection.useSSL", "false");
         configuration.setProperty("hibernate.enable_lazy_load_no_trans", "true");
 

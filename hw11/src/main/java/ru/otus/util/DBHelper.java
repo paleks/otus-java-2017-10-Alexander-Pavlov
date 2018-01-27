@@ -1,6 +1,7 @@
 package ru.otus.util;
 
 import ru.otus.cache.CacheEngine;
+import ru.otus.config.Configuration;
 import ru.otus.executor.Executor;
 import ru.otus.service.DBService;
 import ru.otus.service.DBServiceImpl;
@@ -34,11 +35,7 @@ public class DBHelper {
         return new Executor(connection);
     }
 
-    public static DBService getDBServiceInstance() {
-        return new DBServiceImpl();
-    }
-
-    public static DBService getDBServiceInstance(CacheEngine cacheEngine) {
-        return new DBServiceImpl(cacheEngine);
+    public static DBService getDBServiceInstance(Configuration configuration) {
+        return new DBServiceImpl(configuration);
     }
 }

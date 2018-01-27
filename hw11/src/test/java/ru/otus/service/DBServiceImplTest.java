@@ -2,7 +2,9 @@ package ru.otus.service;
 
 import org.junit.Assert;
 import org.junit.Test;
+import ru.otus.cache.CacheEngine;
 import ru.otus.cache.CacheEngineImpl;
+import ru.otus.config.Configuration;
 import ru.otus.entity.UserDataSet;
 import ru.otus.util.DBHelper;
 
@@ -11,9 +13,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DBServiceImplTest {
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void exceptionTest() throws Exception {
+        try (DBService service = DBHelper.getDBServiceInstance(new Configuration())) {
+            service.save(new UserDataSet("Ivan", 2));
+        }
+    }
+
     @Test
     public void saveTest() throws Exception {
-        try (DBService service = DBHelper.getDBServiceInstance()) {
+        Configuration config = new Configuration();
+        config.addClass(UserDataSet.class, null);
+
+        try (DBService service = DBHelper.getDBServiceInstance(config)) {
             long id = service.save(new UserDataSet("Ivan", 2));
             System.out.println("New user with id=" + id + " was created");
             Assert.assertTrue(id != -1);
@@ -22,7 +35,10 @@ public class DBServiceImplTest {
 
     @Test
     public void saveLoadTest() throws Exception {
-        try (DBService service = DBHelper.getDBServiceInstance()) {
+        Configuration config = new Configuration();
+        config.addClass(UserDataSet.class, null);
+
+        try (DBService service = DBHelper.getDBServiceInstance(config)) {
             long id = service.save(new UserDataSet("Ivan", 2));
             System.out.println("New user with id=" + id + " was created");
             UserDataSet user = service.load(id, UserDataSet.class);
@@ -33,36 +49,46 @@ public class DBServiceImplTest {
 
     @Test
     public void saveCacheTest() throws Exception {
-        try (DBService service =
-                     DBHelper.getDBServiceInstance(new CacheEngineImpl<>(5, 0, 0, true))) {
+        Configuration config = new Configuration();
+        CacheEngine<Long, UserDataSet> cacheEngine = new CacheEngineImpl<>(5, 0, 0, true);
+        config.addClass(UserDataSet.class, cacheEngine);
+
+        try (DBService service = DBHelper.getDBServiceInstance(config)) {
             long id = service.save(new UserDataSet("Ivan", 2));
             System.out.println("New user with id=" + id + " was created");
-            System.out.println(service.getCacheEngine().toString());
-            Assert.assertTrue(service.getCacheEngine().get(id) != null);
+            System.out.println(cacheEngine.toString());
+            Assert.assertTrue(cacheEngine.get(id) != null);
         }
     }
 
     @Test
     public void saveLoadCacheHitTest() throws Exception {
-        try (DBService service =
-                     DBHelper.getDBServiceInstance(new CacheEngineImpl<>(5, 0, 0, true))) {
+        Configuration config = new Configuration();
+        CacheEngine<Long, UserDataSet> cacheEngine = new CacheEngineImpl<>(5, 0, 0, true);
+        config.addClass(UserDataSet.class, cacheEngine);
+
+        try (DBService service = DBHelper.getDBServiceInstance(config)) {
             long id = service.save(new UserDataSet("Ivan", 2));
             System.out.println("New user with id=" + id + " was created");
-            UserDataSet user = service.load(id, UserDataSet.class);
-            System.out.println(service.getCacheEngine().toString());
-            Assert.assertTrue(service.getCacheEngine().getHitCount() == 1);
+            service.load(id, UserDataSet.class);
+            System.out.println(cacheEngine.toString());
+            Assert.assertTrue(cacheEngine.getHitCount() == 1);
         }
     }
 
     @Test
     public void saveLoadCacheHitMissTest() throws Exception {
-        try (DBService service =
-                     DBHelper.getDBServiceInstance(new CacheEngineImpl<>(5, 0, 0, true))) {
+        Configuration config = new Configuration();
+        CacheEngine<Long, UserDataSet> cacheEngine =
+                new CacheEngineImpl<>(5, 0, 0, true);
+        config.addClass(UserDataSet.class, cacheEngine);
+
+        try (DBService service = DBHelper.getDBServiceInstance(config)) {
             long id1 = service.save(new UserDataSet("Ivan", 2));
             System.out.println("New user with id=" + id1 + " was created");
-            long id2 = service.save(new UserDataSet("Ivan", 2));
+            long id2 = service.save(new UserDataSet("Alex", 10));
             System.out.println("New user with id=" + id2 + " was created");
-            long id3 = service.save(new UserDataSet("Ivan", 2));
+            long id3 = service.save(new UserDataSet("Dmitry", 22));
             System.out.println("New user with id=" + id3 + " was created");
 
             int size = 2000;
@@ -71,8 +97,6 @@ public class DBServiceImplTest {
             for (int k = 0; k < size; k++) {
                 references.add(new SoftReference<>(new BigObject()));
             }
-
-            //System.gc();
 
             int sum = 0;
             for (int k = 0; k < size; k++) {
@@ -87,8 +111,8 @@ public class DBServiceImplTest {
             System.out.println(user.toString());
             user = service.load(id3, UserDataSet.class);
             System.out.println(user.toString());
-            System.out.println(service.getCacheEngine().toString());
-            Assert.assertTrue(service.getCacheEngine().getMissCount() == 3);
+            System.out.println(cacheEngine.toString());
+            Assert.assertTrue(cacheEngine.getMissCount() == 3);
         }
     }
 
@@ -109,9 +133,5 @@ public class DBServiceImplTest {
 
     static class BigObject {
         final byte[] array = new byte[1024 * 1024];
-
-        public byte[] getArray() {
-            return array;
-        }
     }
 }

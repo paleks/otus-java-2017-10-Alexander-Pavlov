@@ -3,8 +3,10 @@ package ru.otus.entity;
 public abstract class DataSet {
     private long id;
 
+    abstract public Class getDataAccessObjectClass();
+
     public long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(long id) {

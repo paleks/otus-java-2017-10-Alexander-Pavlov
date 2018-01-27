@@ -1,8 +1,13 @@
 package ru.otus.entity;
 
+import ru.otus.dao.UserDataSetDAO;
+
 public class UserDataSet extends DataSet {
     private String name;
     private int age;
+
+    public UserDataSet() {
+    }
 
     public UserDataSet(String name, int age) {
         this.name = name;
@@ -38,5 +43,10 @@ public class UserDataSet extends DataSet {
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 '}';
+    }
+
+    @Override
+    public Class getDataAccessObjectClass() {
+        return UserDataSetDAO.class;
     }
 }

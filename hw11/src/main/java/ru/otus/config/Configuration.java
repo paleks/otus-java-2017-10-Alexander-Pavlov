@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class Configuration  {
     private final Set<Class> classes = new HashSet<>();
-    private final Map<Class, CacheEngine> cacheMap = new HashMap<>();
+    private final Map<Class, CacheEngine<Long, ? extends DataSet>> cacheMap = new HashMap<>();
 
     public void addClass(Class<? extends DataSet> clazz, CacheEngine<Long, ? extends DataSet> cacheEngine) {
         this.classes.add(clazz);
@@ -19,15 +19,11 @@ public class Configuration  {
         }
     }
 
-    public Set<Class> getClasses() {
-        return classes;
+    public boolean isClassAdded(Class clazz) {
+        return this.classes.contains(clazz);
     }
 
-    public Map<Class, CacheEngine> getCacheMap() {
-        return cacheMap;
-    }
-
-    public CacheEngine<Long, DataSet> getCacheEngine(Class clazz) {
+    public CacheEngine<Long, ? extends DataSet> getCacheEngine(Class clazz) {
         return this.cacheMap.get(clazz);
     }
 }

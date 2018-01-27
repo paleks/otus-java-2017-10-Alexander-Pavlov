@@ -91,19 +91,7 @@ public class DBServiceImplTest {
             long id3 = service.save(new UserDataSet("Dmitry", 22));
             System.out.println("New user with id=" + id3 + " was created");
 
-            int size = 2000;
-            List<SoftReference<BigObject>> references = new ArrayList<>(size);
-
-            for (int k = 0; k < size; k++) {
-                references.add(new SoftReference<>(new BigObject()));
-            }
-
-            int sum = 0;
-            for (int k = 0; k < size; k++) {
-                if (references.get(k).get() != null) sum++;
-            }
-
-            System.out.println("Soft references: " + sum);
+            dummyLoad();
 
             UserDataSet user = service.load(id1, UserDataSet.class);
             System.out.println(user.toString());
@@ -112,24 +100,27 @@ public class DBServiceImplTest {
             user = service.load(id3, UserDataSet.class);
             System.out.println(user.toString());
             System.out.println(cacheEngine.toString());
-            Assert.assertTrue(cacheEngine.getMissCount() == 3);
+            // Is cache clean ?
+            Assert.assertTrue(cacheEngine.getMissCount() == 3 && cacheEngine.getHitCount() == 0);
         }
     }
 
-    @Test
-    public void maxElementTest() {
+    private void dummyLoad() {
+        int size = 2000;
+        List<SoftReference<BigObject>> references = new ArrayList<>(size);
 
+        for (int k = 0; k < size; k++) {
+            references.add(new SoftReference<>(new BigObject()));
+        }
+
+        int sum = 0;
+        for (int k = 0; k < size; k++) {
+            if (references.get(k).get() != null) sum++;
+        }
+
+        System.out.println("Soft references: " + sum);
     }
 
-    @Test
-    public void lifeTimeTest() {
-
-    }
-
-    @Test
-    public void idleTimeTest() {
-
-    }
 
     static class BigObject {
         final byte[] array = new byte[1024 * 1024];

@@ -10,20 +10,21 @@ import java.util.Set;
 
 public class Configuration  {
     private final Set<Class> classes = new HashSet<>();
-    private final Map<Class, CacheEngine<Long, ? extends DataSet>> cacheMap = new HashMap<>();
+    private CacheEngine<String, ? extends DataSet> cacheEngine;
 
-    public void addClass(Class<? extends DataSet> clazz, CacheEngine<Long, ? extends DataSet> cacheEngine) {
+    public void addClass(Class<? extends DataSet> clazz) {
         this.classes.add(clazz);
-        if (cacheEngine != null) {
-            this.cacheMap.put(clazz, cacheEngine);
-        }
+    }
+
+    public CacheEngine<String, ? extends DataSet> getCacheEngine() {
+        return cacheEngine;
+    }
+
+    public void addCacheEngine(CacheEngine<String, ? extends DataSet> cacheEngine) {
+        this.cacheEngine = cacheEngine;
     }
 
     public boolean isClassAdded(Class clazz) {
         return this.classes.contains(clazz);
-    }
-
-    public CacheEngine<Long, ? extends DataSet> getCacheEngine(Class clazz) {
-        return this.cacheMap.get(clazz);
     }
 }

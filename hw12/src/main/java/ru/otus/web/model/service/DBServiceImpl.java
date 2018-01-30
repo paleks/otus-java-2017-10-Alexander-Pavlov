@@ -5,7 +5,6 @@ import ru.otus.web.model.cache.CacheEngine;
 import ru.otus.web.model.config.Configuration;
 import ru.otus.web.model.dao.DataSetDAO;
 import ru.otus.web.model.entity.DataSet;
-import ru.otus.web.model.entity.UserDataSet;
 import ru.otus.web.model.util.DBHelper;
 
 import java.sql.Connection;
@@ -20,18 +19,18 @@ public class DBServiceImpl implements DBService {
 
     public DBServiceImpl(Configuration configuration) {
         this.configuration = configuration;
-        this.connection = DBHelper.getConnection();
     }
 
     @Override
-    public <T extends DataSet> long save(T dataSet) {
+    public <T extends DataSet> long save(T dataSet) throws SQLException {
         if (this.configuration.isClassAdded(dataSet.getClass())) {
+            initConnection();
             long id = -1;
             try {
                 DataSetDAO dao = (DataSetDAO) dataSet.getDataAccessObjectClass().newInstance();
                 dao.setConnection(this.connection);
                 id = dao.save(dataSet);
-                addToCache(UserDataSet.class, dataSet);
+                addToCache(dataSet);
             } catch (InstantiationException | IllegalAccessException | SQLException e) {
                 e.printStackTrace();
             }
@@ -42,16 +41,21 @@ public class DBServiceImpl implements DBService {
         }
     }
 
-    private void addToCache(Class clazz, DataSet dataSet) {
-        CacheEngine<Long, ? extends DataSet> cacheEngine = this.configuration.getCacheEngine(clazz);
-        if (cacheEngine != null) {
-            cacheEngine.put(new CacheElement(dataSet.getId(), dataSet));
+    private void initConnection() throws SQLException {
+        if (this.connection == null || this.connection.isClosed()) {
+            this.connection = DBHelper.getConnection();
         }
     }
 
+    private void addToCache(DataSet dataSet) {
+        this.configuration.getCacheEngine().put(
+                new CacheElement(dataSet.getClass().getSimpleName() + dataSet.getId(), dataSet));
+    }
+
     @Override
-    public <T extends DataSet> T load(long id, Class<T> clazz) {
+    public <T extends DataSet> T load(long id, Class<T> clazz) throws SQLException {
         if (this.configuration.isClassAdded(clazz)) {
+            initConnection();
             DataSet dataSet = null;
             try {
                 dataSet = getFromCache(id, clazz);
@@ -62,6 +66,7 @@ public class DBServiceImpl implements DBService {
                 DataSetDAO dao = (DataSetDAO) dataSet.getDataAccessObjectClass().newInstance();
                 dao.setConnection(this.connection);
                 dataSet = dao.read(id);
+                addToCache(dataSet);
             } catch (InstantiationException | IllegalAccessException | SQLException e) {
                 e.printStackTrace();
             }
@@ -73,16 +78,19 @@ public class DBServiceImpl implements DBService {
         }
     }
 
+    @Override
+    public CacheEngine<String, ? extends DataSet> getCacheEngine() {
+        return this.configuration.getCacheEngine();
+    }
+
     private DataSet getFromCache(long id, Class clazz) {
-        CacheEngine<Long, ? extends DataSet> cacheEngine = this.configuration.getCacheEngine(clazz);
-        if (cacheEngine != null && cacheEngine.contains(id)) {
-            return cacheEngine.get(id).getValue();
-        }
-        return null;
+        return this.configuration.getCacheEngine().get(clazz.getSimpleName() + id).getValue();
     }
 
     @Override
     public void close() throws Exception {
-        this.connection.close();
+        if (connection != null) {
+            this.connection.close();
+        }
     }
 }

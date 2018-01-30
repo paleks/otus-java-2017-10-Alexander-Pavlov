@@ -10,16 +10,16 @@ public class CacheElement<K, V> {
 
     public CacheElement(K key, V value) {
         this.key = key;
-        this.refValue = new SoftReference<V>(value);
+        this.refValue = new SoftReference<>(value);
         this.creationTime = getCurrentTime();
         this.lastAccessTime = getCurrentTime();
     }
 
-    protected long getCurrentTime() {
+    private long getCurrentTime() {
         return System.currentTimeMillis();
     }
 
-    public K getKey() {
+    K getKey() {
         return key;
     }
 
@@ -27,15 +27,15 @@ public class CacheElement<K, V> {
         return refValue.get();
     }
 
-    public long getCreationTime() {
+    long getCreationTime() {
         return creationTime;
     }
 
-    public long getLastAccessTime() {
+    long getLastAccessTime() {
         return lastAccessTime;
     }
 
-    public void setAccessed() {
+    void setAccessed() {
         lastAccessTime = getCurrentTime();
     }
 }

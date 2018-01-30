@@ -10,7 +10,7 @@ public class CacheEngineImpl<K, V> implements CacheEngine <K, V> {
     private static final int TIME_THRESHOLD_MS = 5;
 
     private final Timer timer = new Timer();
-    private final Map<K, CacheElement<K, V>> elements = new LinkedHashMap();
+    private final Map<K, CacheElement<K, V>> elements = new LinkedHashMap<>();
 
     private final int maxElements;
     private final long lifeTimeMs;

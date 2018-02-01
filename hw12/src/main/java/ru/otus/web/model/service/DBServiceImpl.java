@@ -78,13 +78,12 @@ public class DBServiceImpl implements DBService {
         }
     }
 
-    @Override
-    public CacheEngine<String, ? extends DataSet> getCacheEngine() {
-        return this.configuration.getCacheEngine();
-    }
-
     private DataSet getFromCache(long id, Class clazz) {
-        return this.configuration.getCacheEngine().get(clazz.getSimpleName() + id).getValue();
+        CacheElement<String, ? extends DataSet> element = this.configuration.getCacheEngine().get(clazz.getSimpleName() + id);
+        if (element != null) {
+            return element.getValue();
+        }
+        return null;
     }
 
     @Override

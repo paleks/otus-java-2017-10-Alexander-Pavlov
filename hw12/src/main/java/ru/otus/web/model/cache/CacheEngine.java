@@ -8,6 +8,14 @@ public interface CacheEngine<K, V> {
 
     boolean contains(K key);
 
+    int getMaxElements();
+
+    long getLifeTime();
+
+    long getIdleTime();
+
+    boolean isEternal();
+
     int getHitCount();
 
     int getMissCount();

@@ -3,25 +3,32 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Admin</title>
+
+    <script>
+        function refresh() {
+            location.reload();
+        }
+    </script>
 </head>
-<body>
+<body onload='setInterval(function(){refresh()}, 1000 );'>
 <div class="top">
     <img src="logo.png"/>
     <br/>
-    <a href="login">Login</a> <a href="admin">Admin</a> <a href="timer">Timer</a>
 </div>
 
-<p>Login: ${login}</p>
+Cache info updates every 2 seconds!
 
-<p>Method: ${method}</p>
+<p>Cache max elements: ${max}</p>
 
-<p>URL: ${URL}</p>
+<p>Cache element life time (ms): ${life}</p>
 
-<p>Locale: ${locale}</p>
+<p>Cache element idle time (ms): ${idle}</p>
 
-<p>SessionId: ${sessionId}</p>
+<p>Is cache eternal: ${eternal}</p>
 
-<p>Parameters: ${parameters}</p>
+<p>Cache hits: ${hits}</p>
+
+<p>Cache miss: ${miss}</p>
 
 </body>
 </html>

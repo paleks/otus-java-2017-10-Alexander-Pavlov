@@ -50,7 +50,7 @@ public class CacheEngineImpl<K, V> implements CacheEngine <K, V> {
     @Override
     public CacheElement<K, V> get(K key) {
         CacheElement<K, V> element = elements.get(key);
-        if (element.getValue() != null) {
+        if (element != null && element.getValue() != null) {
             hit++;
             element.setAccessed();
         } else {
@@ -62,6 +62,26 @@ public class CacheEngineImpl<K, V> implements CacheEngine <K, V> {
     @Override
     public boolean contains(K key) {
         return this.elements.containsKey(key);
+    }
+
+    @Override
+    public int getMaxElements() {
+        return this.maxElements;
+    }
+
+    @Override
+    public long getLifeTime() {
+        return this.lifeTimeMs;
+    }
+
+    @Override
+    public long getIdleTime() {
+        return this.idleTimeMs;
+    }
+
+    @Override
+    public boolean isEternal() {
+        return this.isEternal;
     }
 
     @Override

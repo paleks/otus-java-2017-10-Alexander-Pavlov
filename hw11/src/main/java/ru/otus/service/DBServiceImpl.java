@@ -62,6 +62,7 @@ public class DBServiceImpl implements DBService {
                 DataSetDAO dao = (DataSetDAO) dataSet.getDataAccessObjectClass().newInstance();
                 dao.setConnection(this.connection);
                 dataSet = dao.read(id);
+                this.addToCache(clazz, dataSet);
             } catch (InstantiationException | IllegalAccessException | SQLException e) {
                 e.printStackTrace();
             }

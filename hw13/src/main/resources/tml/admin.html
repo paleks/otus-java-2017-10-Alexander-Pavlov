@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin</title>
+
+    <script>
+        function refresh() {
+            location.reload();
+        }
+    </script>
+</head>
+<body onload='setInterval(function(){refresh()}, 1000 );'>
+<div class="top">
+    <img src="logo.png"/>
+    <br/>
+</div>
+
+Cache info updates every 2 seconds!
+
+<p>Cache max elements: ${max}</p>
+
+<p>Cache element life time (ms): ${life}</p>
+
+<p>Cache element idle time (ms): ${idle}</p>
+
+<p>Is cache eternal: ${eternal}</p>
+
+<p>Cache hits: ${hits}</p>
+
+<p>Cache miss: ${miss}</p>
+
+</body>
+</html>

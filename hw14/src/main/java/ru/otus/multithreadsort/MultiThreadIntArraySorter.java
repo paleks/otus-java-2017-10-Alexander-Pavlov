@@ -53,17 +53,18 @@ class MultiThreadIntArraySorter {
 
     private int[] merge(int[] arr1, int[] arr2) {
         int[] arr = new int[arr1.length + arr2.length];
-        int i = 0;
-        int j = 0;
-        for (int k = 0; k < arr.length; k++) {
-            if (i > arr1.length - 1) {
-                arr[k] = arr2[j++];
-            } else if (j > arr2.length - 1) {
-                arr[k] = arr1[i++];
-            } else if (arr2[j] < arr1[i]) {
-                arr[k] = arr2[j++];
+        int firstArrIndex = 0;
+        int secondArrIndex = 0;
+        int resultArrIndex = 0;
+        for (; resultArrIndex < arr.length; resultArrIndex++) {
+            if (firstArrIndex > arr1.length - 1) {
+                arr[resultArrIndex] = arr2[secondArrIndex++];
+            } else if (secondArrIndex > arr2.length - 1) {
+                arr[resultArrIndex] = arr1[firstArrIndex++];
+            } else if (arr2[secondArrIndex] < arr1[firstArrIndex]) {
+                arr[resultArrIndex] = arr2[secondArrIndex++];
             } else {
-                arr[k] = arr1[i++];
+                arr[resultArrIndex] = arr1[firstArrIndex++];
             }
         }
         return arr;

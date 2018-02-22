@@ -20,9 +20,4 @@ class IntArraySortThread extends Thread {
     int[] getResult() {
         return array;
     }
-
-    boolean isSorted() {
-        return this.isSorted;
-    }
-
 }

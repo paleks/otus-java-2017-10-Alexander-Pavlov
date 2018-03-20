@@ -1,12 +1,12 @@
 package ru.otus.webapp.model.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.otus.webapp.model.cache.CacheElement;
-import ru.otus.webapp.model.cache.CacheEngine;
+import ru.otus.webapp.services.cache.CacheElement;
 import ru.otus.webapp.model.config.Configuration;
 import ru.otus.webapp.model.dao.DataSetDAO;
 import ru.otus.webapp.model.entity.DataSet;
 import ru.otus.webapp.model.util.DBHelper;
+import ru.otus.webapp.services.cache.CacheEngine;
 
 import java.sql.Connection;
 import java.sql.SQLException;

@@ -1,34 +1,57 @@
-﻿<html>
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"/>
-    <title>Jetty WebSocket: Chat</title>
-    <script src="js/ws.js" type="text/javascript"></script>
+    <title>Admin</title>
+
+    <script>
+        function init() {
+            ws = new WebSocket("ws://localhost:8081/admin-console-app/socket");
+
+            ws.onopen = function (event) {
+            }
+
+            ws.onmessage = function (event) {
+                document.getElementById('Max').innerHTML = JSON.parse(event.data).maxElements;
+                document.getElementById('Life').innerHTML = JSON.parse(event.data).lifeTimeMs;
+                document.getElementById('Idle').innerHTML = JSON.parse(event.data).idleTimeMs;
+                document.getElementById('Eternal').innerHTML = JSON.parse(event.data).isEternal;
+                document.getElementById('Hits').innerHTML = JSON.parse(event.data).hit;
+                document.getElementById('Miss').innerHTML = JSON.parse(event.data).miss;
+
+                console.log("onmessage: " + event.data)
+            }
+
+            ws.onclose = function (event) {
+
+            }
+        };
+
+        function sendMessage() {
+            ws.send("cache");
+            console.log("Update cache is requested...")
+        }
+    </script>
+
 </head>
-<body onload="init();">
-<div id="body">
-    <body onload='polling();'>
-    <div class="top">
-        <img src="img/logo.png"/>
-        <br/>
-        <a href="timer">Reload page timer</a> <a href="ajaxtimer.html">AJAX timer</a>
-        <a href="messenger.html">Long polling messenger</a> <a href="wschat.html">Websocket chat</a><br/>
-    </div>
-    <div id="menu">
-        <p class="welcome">
-            Welcome,<input id="username" value="anonymous"/>
-        </p>
-
-        <div style="clear: both"></div>
-    </div>
-
-    <div id="chatbox">
-        <textarea id="messages" rows="16" cols="48" readonly="readonly"></textarea>
-    </div>
-
-    <form name="message" action="">
-        <input name="usermsg" type="text" id="message" size="63"/>
-        <input type="button" name="submitmsg" value="Send..." onclick="sendMessage();"/>
-    </form>
+<body onload="init();setInterval(function(){sendMessage()}, 1000 );">
+<div class="top">
+    <img src="logo.png"/>
+    <br/>
 </div>
+
+Cache info updates every 2 seconds!
+
+<p>Cache max elements: <span id='Max'></span></p>
+
+<p>Cache element life time (ms): <span id='Life'></span></p>
+
+<p>Cache element idle time (ms): <span id='Idle'></span></p>
+
+<p>Is cache eternal: <span id='Eternal'></span></p>
+
+<p>Cache hits: <span id='Hits'></span></p>
+
+<p>Cache miss: <span id='Miss'></span></p>
+
 </body>
 </html>

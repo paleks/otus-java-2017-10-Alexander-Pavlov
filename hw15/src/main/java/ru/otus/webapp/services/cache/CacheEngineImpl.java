@@ -1,6 +1,9 @@
-package ru.otus.webapp.model.cache;
+package ru.otus.webapp.services.cache;
 
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import ru.otus.webapp.messagesystem.MessageSystemContext;
+import ru.otus.webapp.messagesystem.Address;
+import ru.otus.webapp.messagesystem.MessageSystem;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -8,8 +11,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Function;
 
-//@Component
-public class CacheEngineImpl<K, V> implements CacheEngine <K, V> {
+public class CacheEngineImpl<K, V> implements CacheEngine<K, V> {
     private static final int TIME_THRESHOLD_MS = 5;
 
     private final Timer timer = new Timer();
@@ -23,7 +25,13 @@ public class CacheEngineImpl<K, V> implements CacheEngine <K, V> {
     private int hit = 0;
     private int miss = 0;
 
+    private Address address;
+
+    @Autowired
+    private MessageSystemContext context;
+
     public CacheEngineImpl(int maxElements, long lifeTimeMs, long idleTimeMs, boolean isEternal) {
+        this.address = new Address("Cache");
         this.maxElements = maxElements;
         this.lifeTimeMs = lifeTimeMs > 0 ? lifeTimeMs : 0;
         this.idleTimeMs = idleTimeMs > 0 ? idleTimeMs : 0;
@@ -129,5 +137,34 @@ public class CacheEngineImpl<K, V> implements CacheEngine <K, V> {
                 ", hit=" + hit +
                 ", miss=" + miss +
                 '}';
+    }
+
+    @Override
+    public Address getAddress() {
+        return this.address;
+    }
+
+    @Override
+    public MessageSystem getMS() {
+        return this.context.getMessageSystem();
+    }
+
+    @Override
+    public void init() {
+        this.context.setCacheAddress(this.address);
+        this.context.getMessageSystem().addAddressee(this);
+    }
+
+    @Override
+    public CacheInfo getCacheInfo() {
+        CacheInfo ci = new CacheInfo();
+        ci.setHit(this.getHitCount());
+        ci.setMiss(this.getMissCount());
+        ci.setEternal(this.isEternal);
+        ci.setIdleTimeMs(this.getIdleTime());
+        ci.setLifeTimeMs(this.getLifeTime());
+        ci.setMaxElements(this.getMaxElements());
+
+        return ci;
     }
 }

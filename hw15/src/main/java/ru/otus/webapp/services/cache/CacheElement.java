@@ -1,4 +1,4 @@
-package ru.otus.webapp.model.cache;
+package ru.otus.webapp.services.cache;
 
 import java.lang.ref.SoftReference;
 

@@ -5,8 +5,6 @@ import com.google.gson.stream.JsonReader;
 import ru.otus.messageserver.app.Msg;
 import ru.otus.messageserver.messages.CacheInfoMsg;
 import ru.otus.messageserver.messagesystem.Address;
-import ru.otus.messageserver.messagesystem.Addressee;
-import ru.otus.messageserver.messagesystem.MessageSystem;
 import ru.otus.messageserver.messagesystem.MessageSystemContext;
 import ru.otus.messageserver.messagesystem.msg.MsgGetCacheAnswer;
 
@@ -15,14 +13,11 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CacheSocketMsgWorker extends SocketMsgWorker implements Addressee {
+public class CacheSocketMsgWorker extends SocketMsgWorker {
     private static final Logger logger = Logger.getLogger(CacheSocketMsgWorker.class.getName());
 
-    private final MessageSystemContext context;
-
     public CacheSocketMsgWorker(Socket socket, MessageSystemContext context) {
-        super(socket);
-        this.context = context;
+        super(socket, context);
     }
 
     /**
@@ -60,8 +55,9 @@ public class CacheSocketMsgWorker extends SocketMsgWorker implements Addressee {
                     reader.setLenient(true);
 
                     CacheInfoMsg cacheInfoMsg = new Gson().fromJson(reader, CacheInfoMsg.class);
-                    this.context.getMessageSystem().sendMessage(
-                            new MsgGetCacheAnswer(this.getAddress(), this.context.getFrontAddress(), cacheInfoMsg.getCacheInfo()));
+                    this.getMS().sendMessage(
+                            new MsgGetCacheAnswer(this.getAddress(),
+                                    this.getMessageSystemContext().getFrontAddress(), cacheInfoMsg.getCacheInfo()));
                     stringBuilder.setLength(0);
                 }
             }
@@ -72,11 +68,6 @@ public class CacheSocketMsgWorker extends SocketMsgWorker implements Addressee {
 
     @Override
     public Address getAddress() {
-        return context.getCacheAddress();
-    }
-
-    @Override
-    public MessageSystem getMS() {
-        return context.getMessageSystem();
+        return this.getMessageSystemContext().getCacheAddress();
     }
 }

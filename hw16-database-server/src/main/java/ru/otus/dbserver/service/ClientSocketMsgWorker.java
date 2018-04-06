@@ -3,9 +3,6 @@ package ru.otus.dbserver.service;
 import java.io.IOException;
 import java.net.Socket;
 
-/**
- * Created by tully.
- */
 public class ClientSocketMsgWorker extends SocketMsgWorker {
 
     private final Socket socket;

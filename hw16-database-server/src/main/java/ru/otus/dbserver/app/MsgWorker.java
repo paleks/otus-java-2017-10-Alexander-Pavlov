@@ -2,9 +2,6 @@ package ru.otus.dbserver.app;
 
 import java.io.IOException;
 
-/**
- * Created by tully.
- */
 public interface MsgWorker {
     void send(Msg msg);
 

@@ -1,25 +1,21 @@
 package ru.otus.messageserver.channel;
 
-import com.google.gson.Gson;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import ru.otus.messageserver.app.Msg;
 import ru.otus.messageserver.app.MsgWorker;
+import ru.otus.messageserver.messagesystem.Address;
+import ru.otus.messageserver.messagesystem.Addressee;
+import ru.otus.messageserver.messagesystem.MessageSystem;
+import ru.otus.messageserver.messagesystem.MessageSystemContext;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class SocketMsgWorker implements MsgWorker {
+public abstract class SocketMsgWorker implements MsgWorker, Addressee {
     private static final Logger logger = Logger.getLogger(SocketMsgWorker.class.getName());
     private static final int WORKERS_COUNT = 2;
 
@@ -29,10 +25,18 @@ public class SocketMsgWorker implements MsgWorker {
     protected final ExecutorService executor;
     protected final Socket socket;
 
-    public SocketMsgWorker(Socket socket) {
+    private final MessageSystemContext context;
+
+    public SocketMsgWorker(Socket socket, MessageSystemContext context) {
         this.socket = socket;
+        this.context = context;
         this.executor = Executors.newFixedThreadPool(WORKERS_COUNT);
     }
+
+    @Blocks
+    abstract protected void sendMessage();
+    @Blocks
+    abstract protected void receiveMessage();
 
     @Override
     public void send(Msg msg) {
@@ -51,6 +55,7 @@ public class SocketMsgWorker implements MsgWorker {
 
     @Override
     public void close() throws IOException {
+        this.socket.close();
         executor.shutdown();
     }
 
@@ -59,14 +64,17 @@ public class SocketMsgWorker implements MsgWorker {
         executor.execute(this::receiveMessage);
     }
 
-    @Blocks
-    protected void sendMessage() {
-
+    public MessageSystemContext getMessageSystemContext() {
+        return this.context;
     }
 
-    @Blocks
-    protected void receiveMessage() {
-
+    @Override
+    public Address getAddress() {
+        return null;
     }
 
+    @Override
+    public MessageSystem getMS() {
+        return this.context.getMessageSystem();
+    }
 }

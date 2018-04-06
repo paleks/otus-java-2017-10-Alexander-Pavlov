@@ -1,8 +1,6 @@
 package ru.otus.messageserver.channel;
 
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
-import org.json.simple.parser.ParseException;
 import ru.otus.messageserver.app.Msg;
 import ru.otus.messageserver.messages.CacheInfoMsg;
 import ru.otus.messageserver.messagesystem.Address;
@@ -10,34 +8,21 @@ import ru.otus.messageserver.messagesystem.Addressee;
 import ru.otus.messageserver.messagesystem.MessageSystem;
 import ru.otus.messageserver.messagesystem.MessageSystemContext;
 import ru.otus.messageserver.messagesystem.msg.MsgGetCache;
-import ru.otus.messageserver.messagesystem.msg.MsgGetCacheAnswer;
-import ru.otus.messageserver.messagesystem.msg.MsgToCache;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class FrontSocketMsgWorker extends SocketMsgWorker implements Addressee {
+public class FrontSocketMsgWorker extends SocketMsgWorker {
     private static final Logger logger = Logger.getLogger(FrontSocketMsgWorker.class.getName());
 
-    private final MessageSystemContext context;
-
-    private boolean isActive = true;
-
     public FrontSocketMsgWorker(Socket socket, MessageSystemContext context) {
-        super(socket);
-        this.context = context;
-    }
-
-    public boolean isActive() {
-        return this.isActive;
+        super(socket, context);
     }
 
     /**
      * Sends message to web app
-     *
-     * TODO
      */
     @Override
     protected void sendMessage() {
@@ -67,14 +52,9 @@ public class FrontSocketMsgWorker extends SocketMsgWorker implements Addressee {
             StringBuilder stringBuilder = new StringBuilder();
             while ((inputLine = in.readLine()) != null) { //blocks
                 CacheInfoMsg cacheInfoMsg = new Gson().fromJson(inputLine, CacheInfoMsg.class);
-                if (cacheInfoMsg.isAlive()) {
-                    //System.out.println("FRONT SOCKET: Message is received: " + inputLine);
-                    this.context.getMessageSystem().sendMessage(
-                            new MsgGetCache(this.context.getFrontAddress(), this.context.getCacheAddress()));
-                } else {
-                    // is ready to be deleted
-                    this.isActive = false;
-                }
+                //System.out.println("FRONT SOCKET: Message is received: " + inputLine);
+                this.getMS().sendMessage(
+                        new MsgGetCache(this.getAddress(), this.getMessageSystemContext().getCacheAddress()));
 //                this.context.getMessageSystem().sendMessage(
 //                        new MsgGetCacheAnswer(this.getAddress(), this.context.getFrontAddress(), cacheInfoMsg.getCacheInfo()));
                 stringBuilder.setLength(0);
@@ -86,11 +66,6 @@ public class FrontSocketMsgWorker extends SocketMsgWorker implements Addressee {
 
     @Override
     public Address getAddress() {
-        return context.getFrontAddress();
-    }
-
-    @Override
-    public MessageSystem getMS() {
-        return context.getMessageSystem();
+        return this.getMessageSystemContext().getFrontAddress();
     }
 }

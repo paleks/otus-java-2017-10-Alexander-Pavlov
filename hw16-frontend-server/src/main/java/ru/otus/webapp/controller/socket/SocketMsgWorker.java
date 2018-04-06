@@ -1,7 +1,6 @@
 package ru.otus.webapp.controller.socket;
 
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 import ru.otus.webapp.app.Msg;
 import ru.otus.webapp.app.MsgWorker;
 import ru.otus.webapp.controller.websocket.MyWebSocket;
@@ -20,11 +19,11 @@ public class SocketMsgWorker implements MsgWorker {
     private static final Logger logger = Logger.getLogger(SocketMsgWorker.class.getName());
     private static final int WORKERS_COUNT = 2;
 
-    protected final BlockingQueue<Msg> output = new LinkedBlockingQueue<>();
-    protected final BlockingQueue<Msg> input = new LinkedBlockingQueue<>();
+    private final BlockingQueue<Msg> output = new LinkedBlockingQueue<>();
+    private final BlockingQueue<Msg> input = new LinkedBlockingQueue<>();
 
-    protected final ExecutorService executor;
-    protected final Socket socket;
+    private final ExecutorService executor;
+    private final Socket socket;
 
     private MyWebSocket webSocket;
 
@@ -59,7 +58,7 @@ public class SocketMsgWorker implements MsgWorker {
         executor.execute(this::receiveMessage);
     }
 
-    protected void sendMessage() {
+    private void sendMessage() {
         try (PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
             while (socket.isConnected()) {
                 Msg msg = output.take(); //blocks
@@ -73,7 +72,7 @@ public class SocketMsgWorker implements MsgWorker {
         }
     }
 
-    protected void receiveMessage() {
+    private void receiveMessage() {
         try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
             String inputLine;
             StringBuilder stringBuilder = new StringBuilder();
@@ -81,9 +80,7 @@ public class SocketMsgWorker implements MsgWorker {
                 //System.out.println("Message received: " + inputLine);
                 stringBuilder.append(inputLine);
                 if (inputLine.isEmpty()) { //empty line is the end of the messageserver
-                    JsonReader reader = new JsonReader(new StringReader(stringBuilder.toString()));
-                    reader.setLenient(true);
-                    CacheInfoMsg cacheInfoMsg = new Gson().fromJson(reader, CacheInfoMsg.class);
+                    CacheInfoMsg cacheInfoMsg = new Gson().fromJson(inputLine, CacheInfoMsg.class);
 
                     this.webSocket.send(cacheInfoMsg.getCacheInfo());
 

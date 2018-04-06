@@ -49,6 +49,6 @@ public class DBServerMain {
         SocketMsgWorker client = new ClientSocketMsgWorker(HOST, PORT, dbService);
         client.init();
 
-        dbService.close();
+        //dbService.close();
     }
 }

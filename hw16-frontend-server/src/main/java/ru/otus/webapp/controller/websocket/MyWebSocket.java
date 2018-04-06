@@ -27,8 +27,7 @@ public class MyWebSocket {
 
     @OnWebSocketMessage
     public void onMessage(String data) {
-        //logger.log(Level.INFO, "Message is received from browser");
-        Msg msg = new CacheInfoMsg(true);
+        Msg msg = new CacheInfoMsg();
         socketWorker.send(msg);
         logger.log(Level.INFO, "GetCache message is sent to Message server: " + msg.toString());
     }
@@ -54,7 +53,6 @@ public class MyWebSocket {
 
     @OnWebSocketClose
     public void onClose(int statusCode, String reason) throws IOException {
-        socketWorker.send(new CacheInfoMsg(false));
         socketWorker.close();
         logger.log(Level.INFO, "Web socket, socket are closed");
     }

@@ -4,9 +4,6 @@ import ru.otus.messageserver.channel.Blocks;
 
 import java.io.IOException;
 
-/**
- * Created by tully.
- */
 public interface MsgWorker {
     void send(Msg msg);
 

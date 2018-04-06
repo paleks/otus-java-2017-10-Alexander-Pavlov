@@ -1,0 +1,57 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin</title>
+
+    <script>
+        function init() {
+            ws = new WebSocket("ws://localhost:8081/admin-console-app/socket");
+
+            ws.onopen = function (event) {
+            }
+
+            ws.onmessage = function (event) {
+                document.getElementById('Max').innerHTML = JSON.parse(event.data).maxElements;
+                document.getElementById('Life').innerHTML = JSON.parse(event.data).lifeTimeMs;
+                document.getElementById('Idle').innerHTML = JSON.parse(event.data).idleTimeMs;
+                document.getElementById('Eternal').innerHTML = JSON.parse(event.data).isEternal;
+                document.getElementById('Hits').innerHTML = JSON.parse(event.data).hit;
+                document.getElementById('Miss').innerHTML = JSON.parse(event.data).miss;
+
+                console.log("onmessage: " + event.data)
+            }
+
+            ws.onclose = function (event) {
+
+            }
+        };
+
+        function sendMessage() {
+            ws.send("cache");
+            console.log("Update cache is requested...")
+        }
+    </script>
+
+</head>
+<body onload="init();setInterval(function(){sendMessage()}, 5000 );">
+<div class="top">
+    <img src="logo.png"/>
+    <br/>
+</div>
+
+Cache info updates every 2 seconds!
+
+<p>Cache max elements: <span id='Max'></span></p>
+
+<p>Cache element life time (ms): <span id='Life'></span></p>
+
+<p>Cache element idle time (ms): <span id='Idle'></span></p>
+
+<p>Is cache eternal: <span id='Eternal'></span></p>
+
+<p>Cache hits: <span id='Hits'></span></p>
+
+<p>Cache miss: <span id='Miss'></span></p>
+
+</body>
+</html>

@@ -24,6 +24,11 @@ public class MyWebSocket {
 
     private SocketMsgWorker socketWorker;
 
+    public MyWebSocket(SocketMsgWorker socketMsgWorker) {
+        this.socketWorker = socketMsgWorker;
+        this.socketWorker.connectWithWebSocket(this);
+    }
+
     @OnWebSocketMessage
     public void onMessage(String data) {
         this.socketWorker.send(new CacheInfoMsg());
@@ -34,8 +39,8 @@ public class MyWebSocket {
     public void onOpen(Session session) throws IOException {
         setSession(session);
 
-        this.socketWorker = new SocketMsgWorker("localhost", MESSAGE_SERVER_PORT);
-        this.socketWorker.connectWithWebSocket(this);
+        //this.socketWorker = new SocketMsgWorker("localhost", MESSAGE_SERVER_PORT);
+        
         this.socketWorker.init();
 
         logger.log(Level.INFO, "Web socket is opened, socket worker is inited");

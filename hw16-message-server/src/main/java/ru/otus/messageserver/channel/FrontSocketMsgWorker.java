@@ -2,10 +2,7 @@ package ru.otus.messageserver.channel;
 
 import com.google.gson.Gson;
 import ru.otus.messageserver.app.Msg;
-import ru.otus.messageserver.messages.CacheInfoMsg;
 import ru.otus.messageserver.messagesystem.Address;
-import ru.otus.messageserver.messagesystem.Addressee;
-import ru.otus.messageserver.messagesystem.MessageSystem;
 import ru.otus.messageserver.messagesystem.MessageSystemContext;
 import ru.otus.messageserver.messagesystem.msg.MsgGetCache;
 
@@ -28,13 +25,12 @@ public class FrontSocketMsgWorker extends SocketMsgWorker {
     protected void sendMessage() {
         try (PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
             while (socket.isConnected()) {
-                //Msg msg = output.take(); //blocks
                 Msg msg = output.poll();
                 if (msg != null) {
                     String json = new Gson().toJson(msg);
                     out.println(json);
                     out.println();//line with json + an empty line
-                    //System.out.println("FRONT SOCKET: Message is sent to Message system: " + json);
+                    logger.info("Message is sent to Web app " + json);
                 }
             }
         } catch (IOException e) {
@@ -49,15 +45,10 @@ public class FrontSocketMsgWorker extends SocketMsgWorker {
     protected void receiveMessage() {
         try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
             String inputLine;
-            StringBuilder stringBuilder = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) { //blocks
-                CacheInfoMsg cacheInfoMsg = new Gson().fromJson(inputLine, CacheInfoMsg.class);
-                //System.out.println("FRONT SOCKET: Message is received: " + inputLine);
+            while ((inputLine = in.readLine()) != null) {
                 this.getMS().sendMessage(
                         new MsgGetCache(this.getAddress(), this.getMessageSystemContext().getCacheAddress()));
-//                this.context.getMessageSystem().sendMessage(
-//                        new MsgGetCacheAnswer(this.getAddress(), this.context.getFrontAddress(), cacheInfoMsg.getCacheInfo()));
-                stringBuilder.setLength(0);
+                logger.info("Message is received from web app and is sent to Message system");
             }
         } catch (IOException e) {
             logger.log(Level.SEVERE, e.getMessage());

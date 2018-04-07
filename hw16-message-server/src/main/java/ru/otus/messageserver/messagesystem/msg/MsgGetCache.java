@@ -12,6 +12,6 @@ public class MsgGetCache extends MsgToCache {
 
     @Override
     public void exec(CacheSocketMsgWorker cacheSocketWorker) {
-        cacheSocketWorker.send(new CacheInfoMsg(true));
+        cacheSocketWorker.send(new CacheInfoMsg());
     }
 }

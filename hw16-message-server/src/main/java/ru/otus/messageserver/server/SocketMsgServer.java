@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class SocketMsgServer {
+public class SocketMsgServer implements SocketMsgServerMBean {
     private static final Logger logger = Logger.getLogger(SocketMsgServer.class.getName());
 
     private static final int FRONT_PORT = 5050;
@@ -24,6 +24,8 @@ public class SocketMsgServer {
     private final List<SocketMsgWorker> workers;
     private final List<Process> processes;
     private final MessageSystem messageSystem;
+
+    private boolean isStopped = false;
 
     private int counter = 0;
 
@@ -39,7 +41,7 @@ public class SocketMsgServer {
 
         try (ServerSocket cacheSocketServer = new ServerSocket(CACHE_PORT);
              ServerSocket frontSocketServer = new ServerSocket(FRONT_PORT)) {
-            while (true) {
+            while (!isStopped) {
                 logger.info("Message server waites frontend connections on port: " + frontSocketServer.getLocalPort());
                 Socket frontSocket = frontSocketServer.accept();
 
@@ -80,6 +82,13 @@ public class SocketMsgServer {
             }
 
             this.messageSystem.dispose();
+
+            logger.info("Bye...");
         }
+    }
+
+    @Override
+    public void doStop() {
+        this.isStopped = true;
     }
 }

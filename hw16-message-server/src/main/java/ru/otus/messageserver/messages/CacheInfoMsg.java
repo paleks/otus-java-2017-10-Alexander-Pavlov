@@ -10,6 +10,9 @@ public class CacheInfoMsg extends Msg {
         this.cacheInfo = cacheInfo;
     }
 
+    public CacheInfoMsg() {
+    }
+
     public CacheInfo getCacheInfo() {
         return cacheInfo;
     }

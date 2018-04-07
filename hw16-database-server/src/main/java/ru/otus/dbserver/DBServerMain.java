@@ -7,7 +7,6 @@ import ru.otus.dbserver.service.DBService;
 import ru.otus.dbserver.service.SocketMsgWorker;
 import ru.otus.dbserver.util.DBHelper;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 public class DBServerMain {
@@ -48,7 +47,5 @@ public class DBServerMain {
 
         SocketMsgWorker client = new ClientSocketMsgWorker(HOST, PORT, dbService);
         client.init();
-
-        //dbService.close();
     }
 }

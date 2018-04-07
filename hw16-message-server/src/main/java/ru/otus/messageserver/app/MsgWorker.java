@@ -1,7 +1,5 @@
 package ru.otus.messageserver.app;
 
-import ru.otus.messageserver.channel.Blocks;
-
 import java.io.IOException;
 
 public interface MsgWorker {
@@ -9,7 +7,6 @@ public interface MsgWorker {
 
     Msg pool();
 
-    @Blocks
     Msg take() throws InterruptedException;
 
     void close() throws IOException;

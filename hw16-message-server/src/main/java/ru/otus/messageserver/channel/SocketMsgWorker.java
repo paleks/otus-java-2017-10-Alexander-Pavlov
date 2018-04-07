@@ -33,9 +33,7 @@ public abstract class SocketMsgWorker implements MsgWorker, Addressee {
         this.executor = Executors.newFixedThreadPool(WORKERS_COUNT);
     }
 
-    @Blocks
     abstract protected void sendMessage();
-    @Blocks
     abstract protected void receiveMessage();
 
     @Override

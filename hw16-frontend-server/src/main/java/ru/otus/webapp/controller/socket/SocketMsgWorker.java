@@ -61,7 +61,7 @@ public class SocketMsgWorker implements MsgWorker {
     private void sendMessage() {
         try (PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
             while (socket.isConnected()) {
-                Msg msg = output.take(); //blocks
+                Msg msg = output.take();
                 String json = new Gson().toJson(msg);
                 out.println(json);
                 out.println();//line with json + an empty line
@@ -75,20 +75,15 @@ public class SocketMsgWorker implements MsgWorker {
     private void receiveMessage() {
         try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
             String inputLine;
-            StringBuilder stringBuilder = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) { //blocks
-                //System.out.println("Message received: " + inputLine);
-                stringBuilder.append(inputLine);
-                if (inputLine.isEmpty()) { //empty line is the end of the messageserver
-                    CacheInfoMsg cacheInfoMsg = new Gson().fromJson(inputLine, CacheInfoMsg.class);
-
-                    this.webSocket.send(cacheInfoMsg.getCacheInfo());
-
+            while ((inputLine = in.readLine()) != null) {
+                if (!inputLine.isEmpty()) {
                     logger.log(Level.INFO, "Message is received from Message server");
-                    stringBuilder.setLength(0);
+                    CacheInfoMsg cacheInfoMsg = new Gson().fromJson(inputLine, CacheInfoMsg.class);
+                    this.webSocket.send(cacheInfoMsg.getCacheInfo());
                 }
             }
         } catch (IOException e) {
+            logger.log(Level.SEVERE, e.getMessage());
         }
     }
 

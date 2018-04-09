@@ -2,7 +2,6 @@ package ru.otus.atmdepartment;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.Before;
 import ru.otus.atmdepartment.atm.ATM;
 import ru.otus.atmdepartment.atm.ATMFactory;
 import ru.otus.atmdepartment.atm.NominalEnum;

@@ -1,17 +1,15 @@
 package ru.otus.atmdepartment;
 
+import ru.otus.atmdepartment.atm.ATM;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import ru.otus.atmdepartment.atm.ATM;
 
 public class ATMDepartment {
     private static ATMDepartment instance;
     private List<ATM> atmList = new ArrayList<>();
 
-    private ATMDepartment() {
-
-    }
+    private ATMDepartment() {}
 
     public static ATMDepartment getInstance() {
         if (instance == null) {
@@ -28,15 +26,7 @@ public class ATMDepartment {
         this.atmList.remove(atm);
     }
 
-    public int getTotalBalance() {
-        int totalBalance = 0;
-        for (ATM atm : atmList) {
-            totalBalance += atm.getBalance();
-        }
-        return totalBalance;
-    }
-
-    public void totalReset() {
-        this.atmList.forEach(atm -> atm.reset());
+    public List<ATM> getAtmList() {
+        return this.atmList;
     }
 }

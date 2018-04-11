@@ -1,4 +1,4 @@
-package ru.otus.atmdepartment.atm;
+package ru.otus.atmdepartment.money;
 
 public enum NominalEnum {
     ONE_HUNDRED(100),

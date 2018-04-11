@@ -1,8 +1,14 @@
 package ru.otus.atmdepartment.atm;
 
+import ru.otus.atmdepartment.money.MoneyPack;
+import ru.otus.atmdepartment.money.NominalEnum;
+import ru.otus.atmdepartment.money.NotePack;
+
 public class Cell {
     private NominalEnum nominal;
     private int quantity;
+
+    private Cell next;
 
     public Cell(NominalEnum nominal) {
         this.nominal = nominal;
@@ -12,10 +18,10 @@ public class Cell {
         this.quantity += quantityToAdd;
     }
 
-    public int withdraw(int sumToWithdraw) {
+    private int withdraw(int sumToWithdraw) {
         if (this.quantity > 0) {
             int notesToWithdraw = sumToWithdraw / this.nominal.getNominalVal();
-            int remainder = 0;
+            int remainder;
             if (notesToWithdraw > this.quantity) {
                 remainder = sumToWithdraw - (this.nominal.getNominalVal() * this.quantity);
                 this.quantity = 0;
@@ -26,6 +32,17 @@ public class Cell {
             return remainder;
         }
         return sumToWithdraw;
+    }
+
+    public void withdraw(MoneyPack moneyPack, int sumToWithdraw) {
+        int quantityBefore = this.quantity;
+        sumToWithdraw = this.withdraw(sumToWithdraw);
+        int quantityAfter = this.getQuantity();
+        moneyPack.getMoneyPack().add(new NotePack(this.nominal, quantityBefore - quantityAfter));
+
+        if (this.getNext() != null && sumToWithdraw > 0) {
+            this.getNext().withdraw(moneyPack, sumToWithdraw);
+        }
     }
 
     public NominalEnum getNominal() {
@@ -42,6 +59,14 @@ public class Cell {
 
     public void clear() {
         this.quantity = 0;
+    }
+
+    public Cell getNext() {
+        return next;
+    }
+
+    public void setNext(Cell next) {
+        this.next = next;
     }
 
     @Override

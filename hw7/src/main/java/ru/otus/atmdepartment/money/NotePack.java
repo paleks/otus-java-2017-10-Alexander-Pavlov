@@ -1,4 +1,4 @@
-package ru.otus.atmdepartment.atm;
+package ru.otus.atmdepartment.money;
 
 public class NotePack {
 

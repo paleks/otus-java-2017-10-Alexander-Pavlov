@@ -1,4 +1,4 @@
-package ru.otus.atmdepartment.atm;
+package ru.otus.atmdepartment.money;
 
 import java.util.ArrayList;
 import java.util.List;
